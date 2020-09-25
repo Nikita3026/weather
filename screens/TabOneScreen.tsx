@@ -1,32 +1,37 @@
-import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import React from 'react';
+import { StyleSheet, ListRenderItem } from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
+import {ScrollView} from 'react-native';
 
-export default function TabOneScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabOneScreen.js" />
-    </View>
-  );
+import Search from '../components/ForecastPage/Search';
+import ForecastInfo from '../components/ForecastPage/ForecastInfo';
+import Coordinates from '../components/ForecastPage/Coordinates';
+import { AntDesign } from '@expo/vector-icons';
+
+export default class TabOneScreen extends React.Component<{}, {}> {
+  render() {
+    return (
+      <View style={styles.container}>
+        <Search/>
+        <Text style={styles.placeName}>
+          <AntDesign name="enviromento" size={28} color="#D0523E" /> Minsk, Belarus</Text>
+        <ForecastInfo/>
+        <Coordinates/>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems:'center'
   },
-  title: {
-    fontSize: 20,
+  placeName: {
+    fontSize: 30,
     fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
+    marginTop:30,
+    marginBottom:30
+  }
 });

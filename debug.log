@@ -1,0 +1,10 @@
+[0926/151418.848:ERROR:process_info.cc(329)] VirtualQueryEx: Отказано в доступе. (0x5)
+[0926/151419.051:ERROR:process_info.cc(329)] VirtualQueryEx: Отказано в доступе. (0x5)
+[0926/151419.207:ERROR:process_info.cc(556)] ReadMemoryInfo failed
+[0926/151419.207:ERROR:process_info.cc(556)] ReadMemoryInfo failed
+[0926/151419.301:ERROR:process_info.cc(329)] VirtualQueryEx: Отказано в доступе. (0x5)
+[0926/151419.301:ERROR:process_info.cc(556)] ReadMemoryInfo failed
+[0926/151419.988:ERROR:process_info.cc(329)] VirtualQueryEx: Отказано в доступе. (0x5)
+[0926/151419.988:ERROR:process_info.cc(556)] ReadMemoryInfo failed
+[0926/151420.160:ERROR:process_info.cc(329)] VirtualQueryEx: Отказано в доступе. (0x5)
+[0926/151420.160:ERROR:process_info.cc(556)] ReadMemoryInfo failed

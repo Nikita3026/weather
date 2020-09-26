@@ -7,19 +7,19 @@ interface State {
     searchInputValue:string
 }
 
-export default class Search extends React.Component<{}, State> {
+interface Props {
+  handleButtonPress:Function
+}
+
+export default class Search extends React.Component<Props, State> {
     state = {
         searchInputValue: ''
       }
 
     handleInputChange = (newValue: string): void => {
-    this.setState({
-        searchInputValue: newValue
-    });
-    }
-
-    handleButtonPress = ():void => {
-    alert('hi');
+      this.setState({
+          searchInputValue: newValue
+      });
     }
 
     render(){
@@ -31,7 +31,7 @@ export default class Search extends React.Component<{}, State> {
               value={this.state.searchInputValue}
             />
             <Button
-            onPress={this.handleButtonPress}
+            onPress={(e) => this.props.handleButtonPress(e, this.state.searchInputValue)}
             title="Search"
             color="white"
             />

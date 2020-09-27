@@ -1,7 +1,5 @@
 import React from 'react';
-import { StyleSheet, ListRenderItem } from 'react-native';
-import { View, Text} from '../Themed';
-import {FlatList} from 'react-native';
+import { StyleSheet, FlatList,  View } from 'react-native';
 
 import ForecastInfoItem from './ForecastInfoItem';
 import createAdditionalData from '../../utils/createAdditionalData';

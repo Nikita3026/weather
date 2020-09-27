@@ -1,7 +1,6 @@
 import React from 'react';
-import { StyleSheet, ListRenderItem } from 'react-native';
-import { View } from '../Themed';
-import { TextInput, Button} from 'react-native';
+import { StyleSheet, View, TextInput, Button} from 'react-native';
+import Colors from '../../constants/Colors';
 
 interface State {
     searchInputValue:string
@@ -33,7 +32,7 @@ export default class Search extends React.Component<Props, State> {
             <Button
             onPress={(e) => this.props.handleButtonPress(e, this.state.searchInputValue)}
             title="Search"
-            color="white"
+            color= {Colors.main.text}
             />
           </View>
         )
@@ -50,18 +49,18 @@ const styles = StyleSheet.create({
       },
       searchInput: {
         height: 40,
-        borderColor: 'white',
+        borderColor: Colors.main.text,
         borderWidth: 1,
         backgroundColor:'#2F2F2F',
         width:'70%',
         borderRadius:10,
-        color:'white',
+        color:Colors.main.text,
         marginRight:10,
         paddingHorizontal:10
       },
       searchSubmitButton: {
         borderRadius:10,
-        borderColor: 'white',
+        borderColor: Colors.main.text,
         height: 40,
       }
 });

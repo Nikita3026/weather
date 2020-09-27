@@ -9,9 +9,9 @@ export type BottomTabParamList = {
 };
 
 export type TabOneParamList = {
-  TabOneScreen: undefined;
+  Forecast: undefined;
 };
 
 export type TabTwoParamList = {
-  TabTwoScreen: undefined;
+  Statistic: undefined;
 };

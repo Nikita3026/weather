@@ -1,7 +1,6 @@
 import React from 'react';
-import { StyleSheet, ListRenderItem } from 'react-native';
-import { Text, View } from '../Themed';
-
+import { StyleSheet, Text, View } from 'react-native';
+import Colors from '../../constants/Colors';
 
 interface Props {
     title:string,
@@ -19,16 +18,16 @@ export default class ForecastInfoItem extends React.Component<Props, {}> {
     }
   }
 
-  const styles = StyleSheet.create({
-    item: {
-        backgroundColor: '#121E2C',
-        paddingHorizontal:10,
-        paddingVertical:5,
-        marginVertical: 6,
-        marginHorizontal: 16,
-    },
-    title: {
-        fontSize: 16,
-        textTransform:'capitalize'
-    },
-  });
+const styles = StyleSheet.create({
+  item: {
+      paddingHorizontal:10,
+      paddingVertical:5,
+      marginVertical: 6,
+      marginHorizontal: 16
+  },
+  title: {
+      fontSize: 16,
+      textTransform:'capitalize',
+      color: Colors.main.text
+  }
+});

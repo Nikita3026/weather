@@ -1,7 +1,5 @@
 import React from 'react';
-import { StyleSheet, ListRenderItem } from 'react-native';
-
-import { Text, View } from '../components/Themed';
+import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 
 import Search from '../components/ForecastPage/Search';
 import ForecastInfo from '../components/ForecastPage/ForecastInfo';
@@ -9,6 +7,7 @@ import Coordinates from '../components/ForecastPage/Coordinates';
 import { AntDesign } from '@expo/vector-icons';
 import Requests from '../utils/requests/requests';
 import Geolocation from '../interfaces/Geolocation';
+import Colors from '../constants/Colors';
 
 interface State {
   currentLatitude:number,
@@ -70,14 +69,16 @@ export default class TabOneScreen extends React.Component<{}, State> {
   render() {
     return (
       <View style={styles.container}>
-        <Search handleButtonPress = {this.handleSearchButtonPress}/>
-        <Text style={styles.placeName}>
-          <AntDesign name="enviromento" size={28} color="#D0523E" /> {this.state.cityName}, {this.state.countryName}</Text>
-        <ForecastInfo cityName = {this.state.cityName}/>
-        <Coordinates
-        currentLatitude = {this.state.currentLatitude}
-        currentLongitude = {this.state.currentLongitude}
-        />
+        <ImageBackground source={image} style={styles.backImage}>
+          <Search handleButtonPress = {this.handleSearchButtonPress}/>
+          <Text style={styles.placeName}>
+            <AntDesign name="enviromento" size={28} color="#D0523E" /> {this.state.cityName}, {this.state.countryName}</Text>
+          <ForecastInfo cityName = {this.state.cityName}/>
+          <Coordinates
+          currentLatitude = {this.state.currentLatitude}
+          currentLongitude = {this.state.currentLongitude}
+          />
+        </ImageBackground>
       </View>
     );
   }
@@ -86,12 +87,15 @@ export default class TabOneScreen extends React.Component<{}, State> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems:'center'
+    alignItems:'center',
+    backgroundColor:Colors.main.background,
+    color:Colors.main.text
   },
   placeName: {
     fontSize: 30,
     fontWeight: 'bold',
     marginTop:30,
-    marginBottom:30
+    marginBottom:30,
+    color:Colors.main.text
   }
 });

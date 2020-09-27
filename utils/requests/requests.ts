@@ -28,10 +28,8 @@ class Requests {
     getCoordinatesFromCityName = async(cityName:string) => {
       try {
         const url =`https://geocode.search.hereapi.com/v1/geocode?q=${cityName}&apiKey=${tokens.geocodingToken}`;
-        console.log(url);
         const res = await this.getRequest(url);
-
-        return res.items[0];
+        return res.data.items[0];
       } catch (error) {
         console.log('Error receiving coordinates');
       }

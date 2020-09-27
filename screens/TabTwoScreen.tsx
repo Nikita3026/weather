@@ -1,14 +1,13 @@
 import  React from 'react';
-import { StyleSheet } from 'react-native';
-
-import { Text, View } from '../components/Themed';
+import { StyleSheet, View } from 'react-native';
 import StatisticTable from '../components/StatisticPage/StatisticTable';
+import Colors from '../constants/Colors';
 
 
 export default class TabTwoScreen extends React.Component {
   render() {
     return (
-      <View style={styles.container} lightColor="#eee" darkColor="rgba(255,255,255,0.1)">
+      <View style={styles.container}>
        {/*  <StatisticTable/> */}
       </View>
     );
@@ -19,6 +18,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent:'center'
+    justifyContent:'center',
+    backgroundColor: Colors.main.background,
+    color: Colors.main.text
   }
 });

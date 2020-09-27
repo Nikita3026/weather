@@ -1,10 +1,9 @@
 import React from 'react';
-import { StyleSheet, ListRenderItem } from 'react-native';
-import { Text } from '../Themed';
-import { View } from 'react-native'
+import { StyleSheet, ListRenderItem, View, Text } from 'react-native';
 
 import AdditionalForecastInfo from './AdditionalForecastInfo';
 import Request from '../../utils/requests/requests';
+import Colors from '../../constants/Colors';
 
 interface Props {
   cityName:string
@@ -67,9 +66,10 @@ const styles = StyleSheet.create({
     currentNumberOfDegrees: {
         fontSize: 140,
         fontWeight: 'bold',
+        color:Colors.main.text
     },
     degrees: {
       fontWeight: '400',
-      fontSize: 120,
+      fontSize: 120
     }
 });

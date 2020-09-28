@@ -5,58 +5,27 @@ import {FlatList} from 'react-native';
 import { Text } from '../Themed';
 import StatisticInfoItem from './StatisticInfoItem';
 import {StringCoordinates} from '../../interfaces/Coordinates';
+import Requests from '../../utils/requests/requests';
+import StatisticData from '../../interfaces/StatisticData';
 
-interface statisticInfoStructure {
-  id:string,
-  place:string,
-  coordinates: {
-    latitude:string,
-    longtitude:string
-  },
-  date:string
+interface State{
+  statisticData:Array<StatisticData>
 }
 
+export default class StatisticTable extends React.Component<{}, State> {
+  request = new Requests();
 
-const testData = [
-  {
-    id:'1',
-    place:"Minsk, Belarus",
-    coordinates: {
-      latitude:  `41°24'12.2"`,
-      longitude: `41°24'12.2"`
-    },
-    date: '12.12.2000 19:40'
-  },
-  {
-    id:'2',
-    place:"Berlin, Germany",
-    coordinates: {
-      latitude:  `41°24'12.2"`,
-      longitude: `41°24'12.2"`
-    },
-    date: '21.03.2000 22:20'
-  },
-  {
-    id:'3',
-    place:"London, England",
-    coordinates: {
-      latitude:  `41°24'12.2"`,
-      longitude: `41°24'12.2"`
-    },
-    date: '5.07.2000 13:15'
-  },
-  {
-    id:'4',
-    place:"New-York, USA",
-    coordinates: {
-      latitude:  `41°24'12.2"`,
-      longitude: `41°24'12.2"`
-    },
-    date: '03.01.2200 12:00'
+  state = {
+    statisticData:[]
   }
-]
 
-export default class StatisticTable extends React.Component {
+  componentDidMount = async(): Promise<any> => {
+    const statisticData:Array<StatisticData> = await this.request.getStatistic();
+    this.setState({
+      statisticData:statisticData
+    });
+  }
+
   renderColumnHeader = (title:string) => {
       return <Text style={styles.tableTitle}>{title}</Text>;
   }

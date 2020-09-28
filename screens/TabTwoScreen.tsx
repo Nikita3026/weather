@@ -8,7 +8,7 @@ export default class TabTwoScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-       {/*  <StatisticTable/> */}
+        <StatisticTable/>
       </View>
     );
   }

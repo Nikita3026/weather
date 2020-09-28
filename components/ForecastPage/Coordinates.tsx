@@ -23,8 +23,7 @@ export default class Coordinates extends React.Component<Props, {}> {
 
 const styles = StyleSheet.create({
   coordinates:{
-      marginTop:50,
-      marginLeft:20
+
   },
   coordinateNumber:{
     color:Colors.main.text

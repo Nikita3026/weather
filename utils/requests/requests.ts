@@ -6,6 +6,31 @@ class Requests {
         return await axios.get(path);
     }
 
+    sendStatistic = async(data:object): Promise<any> => {
+      try {
+        const jsonData = JSON.stringify(data);
+        await axios.post(`https://heroku-server-weather.herokuapp.com/requestData`, jsonData, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'ResponseType': "json"
+            }
+        });
+      } catch (error) {
+        console.log('Error sending statistic');
+      }
+    }
+
+    getStatistic = async():Promise<any> => {
+      try {
+        const res = await this.getRequest('https://heroku-server-weather.herokuapp.com/requestData');
+        return res.data;
+      } catch (error) {
+        console.log('Error receiving place name');
+      }
+    }
+
+
     getPlaceFromCoordinates = async(latitude:string, longitude:string): Promise<any> => {
         try {
             const url =`https://discover.search.hereapi.com/v1/discover?at=${latitude},${longitude}&q=petrol+station&lang=en-US&apiKey=${tokens.geocodingToken}`;

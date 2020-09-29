@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
+import React, {useState} from 'react';
 
 import Colors from '../constants/Colors';
 import TabOneScreen from '../screens/TabOneScreen';
@@ -8,9 +8,16 @@ import TabTwoScreen from '../screens/TabTwoScreen';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
 import { AntDesign } from '@expo/vector-icons';
 
+interface Props {
+  isTableUpToDate:boolean,
+  setTableUpToDateStatus:Function
+}
+
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 export default function BottomTabNavigator() {
+  const [isTableUpToDate, setTableUpToDateStatus] = useState(false);
+
   return (
     <BottomTab.Navigator
       initialRouteName="TabOne"
@@ -20,6 +27,8 @@ export default function BottomTabNavigator() {
         component={TabOneNavigator}
         options={{
           tabBarIcon: () => <TabOneIcon name="ios-code" />,
+          isTableUpToDate:isTableUpToDate,
+          setTableUpToDateStatus:setTableUpToDateStatus
         }}
       />
       <BottomTab.Screen
@@ -27,6 +36,8 @@ export default function BottomTabNavigator() {
         component={TabTwoNavigator}
         options={{
           tabBarIcon: () => <TabTwoIcon name="ios-code" />,
+          isTableUpToDate:isTableUpToDate,
+          setTableUpToDateStatus:setTableUpToDateStatus
         }}
       />
     </BottomTab.Navigator>
@@ -43,15 +54,22 @@ function TabTwoIcon(props: { name: string;}) {
 }
 
 
+
+
 const TabOneStack = createStackNavigator<TabOneParamList>();
 
-function TabOneNavigator() {
+function TabOneNavigator(props:Props) {
   return (
     <TabOneStack.Navigator>
       <TabOneStack.Screen
         name="Forecast"
         component={TabOneScreen}
-        options={{ headerTitle: 'Forecast' }}
+
+        options={{
+          headerTitle: 'Forecast',
+          isTableUpToDate:props.isTableUpToDate,
+          changeTableUpToDateStatus:props.setTableUpToDateStatus
+        }}
       />
     </TabOneStack.Navigator>
   );
@@ -59,13 +77,17 @@ function TabOneNavigator() {
 
 const TabTwoStack = createStackNavigator<TabTwoParamList>();
 
-function TabTwoNavigator() {
+function TabTwoNavigator(props:Props) {
   return (
     <TabTwoStack.Navigator>
       <TabTwoStack.Screen
         name="Statistic"
         component={TabTwoScreen}
-        options={{ headerTitle: 'Statistic' }}
+        options={{
+        headerTitle: 'Statistic',
+        isTableUpToDate:props.isTableUpToDate,
+        changeTableUpToDateStatus:props.setTableUpToDateStatus
+        }}
       />
     </TabTwoStack.Navigator>
   );

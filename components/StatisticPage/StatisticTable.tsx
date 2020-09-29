@@ -1,88 +1,152 @@
 import  React from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
-import {FlatList} from 'react-native';
+import { StyleSheet, View, ScrollView, Dimensions, TouchableHighlight } from 'react-native';
+import { Table, Row, Rows, Text } from 'react-native-table-component';
 
-import { Text } from '../Themed';
-import StatisticInfoItem from './StatisticInfoItem';
 import {StringCoordinates} from '../../interfaces/Coordinates';
 import Requests from '../../utils/requests/requests';
 import StatisticData from '../../interfaces/StatisticData';
+import convertStatisticToTable from '../../utils/convertStatisticToTable';
+import Colors from '../../constants/Colors';
+import ModalWindow from './Modal';
+
 
 interface State{
-  statisticData:Array<StatisticData>
+  statisticData:[string[]],
+  isModalVisible:boolean,
+  modalData:string[]
 }
 
-export default class StatisticTable extends React.Component<{}, State> {
+interface Props {
+  isTableUpToDate:boolean,
+  changeTableUpToDateStatus:any
+}
+
+export default class StatisticTable extends React.Component<Props, State> {
   request = new Requests();
+  widthArray = new Array(3).fill(Dimensions.get('window').width/3 - 1);
+  tableHead = ['Place', 'Coordinates', 'Date'];
 
   state = {
-    statisticData:[]
+    statisticData:[],
+    isModalVisible:false,
+    modalData:[]
   }
 
-  componentDidMount = async(): Promise<any> => {
+  setStatisticData = async():Promise<any> => {
     const statisticData:Array<StatisticData> = await this.request.getStatistic();
     this.setState({
-      statisticData:statisticData
+      statisticData: convertStatisticToTable(statisticData)
     });
   }
 
-  renderColumnHeader = (title:string) => {
-      return <Text style={styles.tableTitle}>{title}</Text>;
+  setModalData = (placeName:string):void => {
+    let data:[] = [];
+    this.state.statisticData.forEach((item) => {
+      if(item[0] === placeName) data = item;
+    });
+    this.setState({
+      modalData:data
+    });
   }
 
-  renderListItem = (data: string | StringCoordinates):React.ReactElement => {
-    return <StatisticInfoItem data = {data}/>;
+  updateData = async(): Promise<any> => {
+    try{
+      if(!this.props.isTableUpToDate) {
+        await this.setStatisticData();
+        this.props.changeTableUpToDateStatus(true);
+      }
+      return null;
+    }catch {
+      return null;
+    }
   }
 
-  /* renderCol = (type:string):React.ReactElement => {
-    const tableColumnStyle = type === 'date' ? [styles.tableColumn, styles.lastColContainer] : styles.tableColumn;
-    return (
-    <Col style = {tableColumnStyle}>
-      <View>
-        {this.renderColumnHeader(type)}
-        <View style = {styles.infoList}>
-          <FlatList
-            data={testData}
-            renderItem={({item}: {item:statisticInfoStructure}) => this.renderListItem(item[type])}
-            keyExtractor={item => item.id}
-          />
-        </View>
-      </View>
-    </Col>)
+  changeModalVisibility = ():void => {
+    this.setState((prevState:State) => {
+      return {
+        isModalVisible:!prevState.isModalVisible
+      }
+    });
   }
- */
+
+  componentDidMount = async(): Promise<any> => {
+    this.updateInterval = setInterval(async():Promise<any> => await this.updateData(),1000);
+  }
+
+  componentWillUnmount = () => {
+    clearInterval(this.updateInterval);
+  }
 
   render() {
     return (
-      <Text>Hi</Text>
+      <View style = {styles.container}>
+        <ScrollView horizontal={true} >
+         <ModalWindow
+            isModalVisible = {this.state.isModalVisible}
+            changeModalVisibility = {this.changeModalVisibility}
+            modalData = {this.state.modalData}
+          />
+            <View>
+              <Table borderStyle={{borderWidth: 1, borderColor: Colors.main.borderColor}}>
+                <Row data={this.tableHead} style={styles.header} textStyle={styles.text} widthArr={this.widthArray}/>
+              </Table>
+             <ScrollView style={styles.dataWrapper}>
+                <Table borderStyle={{borderWidth: 1, borderColor: Colors.main.borderColor}}>
+                  {
+                    this.state.statisticData.map((rowData, index) => (
+                    <TouchableHighlight
+                    data-key = {index}
+                    onPress = {(e:any) => {
+                      console.log(e.dataset);
+                      this.setModalData(e.target._internalFiberInstanceHandleDEV.memoizedProps.children);
+                      this.changeModalVisibility();
+                    }}
+                    >
+                      <Row
+                        key={index}
+                        data={rowData}
+
+                        style={[styles.row, index % 2 && styles.secondRowStyle]}
+                        textStyle={styles.text}
+                        widthArr={this.widthArray}
+
+                      />
+                   </TouchableHighlight>
+                    ))
+                  }
+                </Table>
+              </ScrollView>
+            </View>
+          </ScrollView>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  statisticTableContainer: {
-    flex: 1
+  container: {
+    flex: 1,
+    width:'100%',
   },
-  tableColumn:{
-    alignItems:'center',
-    borderRightWidth:2,
-    borderRightColor:'grey',
-    backgroundColor:'#121E2C'
+  header: {
+    height: 40,
+    backgroundColor: '#D0523E',
+    borderBottomWidth:1,
+    borderBottomColor:Colors.main.secondBackground
   },
-  tableTitle: {
-      fontWeight:'bold',
-      fontSize:17,
-      marginTop:15,
-      marginBottom:15,
-      alignSelf:'center',
-      textTransform:'capitalize'
+  text: {
+    margin: 6,
+    fontSize:12,
+    color:Colors.main.text
   },
-  lastColContainer: {
-    borderRightWidth:0
+  dataWrapper: {
+    marginTop: -1
   },
-  infoList:{
-    borderTopColor:'grey',
-    borderTopWidth:2,
-    backgroundColor:'#121E2C',
+  row: {
+    height: 50,
+    backgroundColor: Colors.main.background
+  },
+  secondRowStyle: {
+    backgroundColor: Colors.main.secondBackground
   }
 });

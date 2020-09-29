@@ -21,8 +21,13 @@ interface State {
   isDayAtUsersPlace:boolean
 }
 
+interface Props {
+  isTableUpToDate:boolean,
+  changeTableUpToDateStatus:any
+}
 
-export default class TabOneScreen extends React.Component<{}, State> {
+
+export default class TabOneScreen extends React.Component<Props, State> {
   requests = new Requests();
 
   state = {
@@ -62,11 +67,11 @@ export default class TabOneScreen extends React.Component<{}, State> {
     });
   }
 
-  sendStatisticAboutRequest = () => {
+  sendStatisticAboutRequest = async():Promise<any> => {
     const convertedCoordinates:StringCoordinates = convertCoordinates(this.state.currentLatitude, this.state.currentLongitude);
     const currentDate = new Date();
     const currentTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
-    this.requests.sendStatistic(
+    await this.requests.sendStatistic(
       createStatisticObject(
         `${this.state.cityName}, ${this.state.countryName}`,
         convertedCoordinates.latitude,
@@ -80,7 +85,8 @@ export default class TabOneScreen extends React.Component<{}, State> {
   getInfoAboutUsersPlace = async(latitude:number, longitude:number):Promise<any> => {
     const geolocationInfo:Geolocation = await this.requests.getPlaceFromCoordinates(latitude.toString(),longitude.toString());
     this.setCity(geolocationInfo.city, geolocationInfo.countryName);
-    this.sendStatisticAboutRequest();
+    await this.sendStatisticAboutRequest();
+    this.props.changeTableUpToDateStatus(false);
   }
 
   getCoordinates = async(position:Position):Promise<any> => {
@@ -92,7 +98,8 @@ export default class TabOneScreen extends React.Component<{}, State> {
     const data = await this.requests.getCoordinatesFromCityName(inputValue);
     this.setCoordinates(data.position.lat, data.position.lng);
     this.setCity(data.address.city, data.address.countryName);
-    this.sendStatisticAboutRequest();
+    await this.sendStatisticAboutRequest();
+    this.props.changeTableUpToDateStatus(false);
   }
 
 

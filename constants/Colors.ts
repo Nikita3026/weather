@@ -3,9 +3,10 @@ export default {
   main: {
     text: 'white',
     background: 'black',
-    secondBackground:'#b6f6d9',
+    secondBackground:'#2F2F2F',
     tint: '#fff',
     tabIconDefault: 'grey',
-    tabIconSelected: '#fff'
+    tabIconSelected: '#fff',
+    borderColor:'#4D4D4D'
   }
 };

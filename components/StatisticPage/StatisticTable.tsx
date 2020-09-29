@@ -1,6 +1,6 @@
 import  React from 'react';
-import { StyleSheet, View, ScrollView, Dimensions, TouchableHighlight } from 'react-native';
-import { Table, Row, Rows, Text } from 'react-native-table-component';
+import { StyleSheet, View, ScrollView, Dimensions, TouchableOpacity,Text } from 'react-native';
+import { Table, Row, Rows,TableWrapper, Cell } from 'react-native-table-component';
 
 import {StringCoordinates} from '../../interfaces/Coordinates';
 import Requests from '../../utils/requests/requests';
@@ -39,11 +39,8 @@ export default class StatisticTable extends React.Component<Props, State> {
     });
   }
 
-  setModalData = (placeName:string):void => {
-    let data:[] = [];
-    this.state.statisticData.forEach((item) => {
-      if(item[0] === placeName) data = item;
-    });
+  setModalData = (index:number):void => {
+    const data:[] = this.state.statisticData[index];
     this.setState({
       modalData:data
     });
@@ -78,6 +75,14 @@ export default class StatisticTable extends React.Component<Props, State> {
   }
 
   render() {
+    const element = (data:string, index:number) => {
+
+        <View style={styles.item}>
+          <Text style={styles.text}>{data}</Text>
+        </View>
+
+    }
+
     return (
       <View style = {styles.container}>
         <ScrollView horizontal={true} >
@@ -93,25 +98,22 @@ export default class StatisticTable extends React.Component<Props, State> {
              <ScrollView style={styles.dataWrapper}>
                 <Table borderStyle={{borderWidth: 1, borderColor: Colors.main.borderColor}}>
                   {
-                    this.state.statisticData.map((rowData, index) => (
-                    <TouchableHighlight
-                    data-key = {index}
-                    onPress = {(e:any) => {
-                      console.log(e.dataset);
-                      this.setModalData(e.target._internalFiberInstanceHandleDEV.memoizedProps.children);
-                      this.changeModalVisibility();
-                    }}
-                    >
-                      <Row
-                        key={index}
-                        data={rowData}
-
-                        style={[styles.row, index % 2 && styles.secondRowStyle]}
-                        textStyle={styles.text}
-                        widthArr={this.widthArray}
-
-                      />
-                   </TouchableHighlight>
+                    this.state.statisticData.map((rowData:string[], index:number) => (
+                      <TableWrapper key = {index} style = {styles.row}>
+                        {
+                          rowData.map((cellData:string, cellIndex:number) => (
+                          <TouchableOpacity onPress={() => {
+                            this.setModalData(index);
+                            this.changeModalVisibility();
+                          }}>
+                            <View style={styles.item}>
+                              <Text style={styles.text}>{cellData}</Text>
+                            </View>
+                          </TouchableOpacity>
+                          )
+                          )
+                        }
+                      </TableWrapper>
                     ))
                   }
                 </Table>
@@ -144,9 +146,18 @@ const styles = StyleSheet.create({
   },
   row: {
     height: 50,
-    backgroundColor: Colors.main.background
+    backgroundColor: Colors.main.background,
+    flexDirection:'row'
   },
   secondRowStyle: {
     backgroundColor: Colors.main.secondBackground
+  },
+  item:{
+    height: 50,
+    width:Dimensions.get('window').width/3-1,
+    borderRightWidth:1,
+    borderRightColor:Colors.main.secondBackground,
+    borderBottomWidth:1,
+    borderBottomColor:Colors.main.secondBackground
   }
 });

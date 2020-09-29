@@ -15,6 +15,7 @@ export default class ModalWindow extends React.Component<Props, {}> {
                 animationType="slide"
                 transparent={true}
                 visible={this.props.isModalVisible}
+                style = {styles.modal}
              >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
@@ -47,8 +48,9 @@ const styles = StyleSheet.create({
         marginTop: 22
       },
       modalView: {
+        width:250,
         margin: 20,
-        backgroundColor: "white",
+        backgroundColor: 'white',
         borderRadius: 20,
         padding: 35,
         alignItems: "center",
